@@ -14,7 +14,7 @@ fi
 
 
 if [ ! -d "web_dir/fo-currys" ]; then
-svn co --non-interactive --trust-server-cert --username="#{node['nemo']['svn_user']}" --password="#{node['nemo']['svn_password']}" #{node['nemo']['currys_svn_branch']} web_dir/fo-currys;
+svn co --non-interactive --trust-server-cert --username="#{node['nemo']['svn_user']}" --password="#{node['nemo']['svn_password']}" #{node['nemo']['svn_currys_branch']} web_dir/fo-currys;
 perl -0777 -i -pe "s/fo\\\\\\.dev\\\\\\.hml\\\\\\.dixonsretail\\\\\\.net/local(:[0-9]*)?/" web_dir/fo-currys/include/networking.inc.php;
 perl -0777 -i -pe "s/(define\\('INTERNAL_IP_MASK',).*?\\);/\\1 '127\\\\\\.0\\\\\\.0\\\\\\.1;10\\\\\\.0\\\\\\.2\\\\\\.2');/sg" web_dir/fo-currys/include/conf-currys/dev/server.conf.php;
 perl -0777 -i -pe "s/(define\\('DEBUG_IP_MASK',).*?\\);/\\1 '127\\\\\\.0\\\\\\.0\\\\\\.1;10\\\\\\.0\\\\\\.2\\\\\\.2');/sg" web_dir/fo-currys/include/conf-currys/dev/server.conf.php;

@@ -1,0 +1,18 @@
+127.0.0.1       localhost
+127.0.1.1 nemo-front-berkshelf nemo-front-berkshelf
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+172.20.1.39 common.wsint-brain.wsint.dev.hml.dixonsretail.net
+172.20.1.39 common.gateway.wsint.dev.hml.dixonsretail.net
+172.20.1.39 common-r2.gateway.wsint.dev.hml.dixonsretail.net
+172.20.1.39 common.ws-scud.wsint.dev.hml.dixonsretail.net
+172.20.1.39 common.sourcing.wsint.dev.hml.dixonsretail.net
+172.20.1.39 common.fraudbuster.wsint.dev.hml.dixonsretail.net
+172.20.1.39 common.ws-client.wsint.dev.hml.dixonsretail.net
+172.20.1.39 common.ws-webcall.dev.hml.dixonsretail.net

@@ -3,7 +3,7 @@ package "libssl0.9.8" do
    action :install
 end
 
-bash "intall_libraries_from_github" do
+bash "install_libraries_from_github" do
 user "root"
 
 code <<-EOF

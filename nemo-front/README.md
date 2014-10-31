@@ -5,7 +5,8 @@ Cookbook for a Nemo portable copy
 1. install chefdk 		: http://getchef.com/downloads/chef-dk
 2. install berkshelf	: vagrant plugin install vagrant-berkshelf
 3. install omnibus      : vagrant plugin install vagrant-omnibus
-4. Run vagrant up
+4. edit attribute file  : attributes/default.rb 
+5. Run vagrant up
 
 ## Supported Platforms
 

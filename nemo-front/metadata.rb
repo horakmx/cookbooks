@@ -8,6 +8,7 @@ version          '0.1.0'
 
 depends 'vim', '~> 1.1.2'
 depends 'apache2', '~> 2.0.0'
+depends 'php', '~> 1.5.0'
 depends 'composer', '~> 2.0.0'
 depends 'php-fpm', '~> 0.6.10'
 depends 'git', '~> 4.0.2'

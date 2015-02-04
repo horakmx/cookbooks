@@ -86,6 +86,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.run_list = [
 		"recipe[nemo-front::apache2]",
 		"recipe[nemo-front::composer]",
+		"recipe[nemo-front::php]",
 		"recipe[nemo-front::syslog]",
 	    "recipe[nemo-front::php-fpm]",
 		"recipe[nemo-front::memcached]",

@@ -3,8 +3,8 @@ include_recipe 'vim'
 
 
 bash "checkout_sites" do
-user "#{node['nemo']['user']}"
-group "#{node['nemo']['group']}"
+user "#{node['nemo']['system_user']}"
+group "#{node['nemo']['system_group']}"
 
 code <<-EOF
 cd #{node['nemo']['root_directory']};
@@ -21,9 +21,6 @@ perl -0777 -i -pe "s/(define\\('DEBUG_IP_MASK',).*?\\);/\\1 '127\\\\\\.0\\\\\\.0
 perl -0777 -i -pe "s/('https?:\\/\\/)'\\s*\\.\\s*getenv\\(\\s*'EM_USERNAME'\\s*\\)\\s*\\.\\s*'/\\1common/sg" web_dir/fo-currys/include/conf-currys/dev/server.conf.php
 fi
 
-perl -0777 -i -pe "s/('https?:\\/\\/)'\\s*\\.\\s*getenv\\(\\s*'EM_USERNAME'\\s*\\)\\s*\\.\\s*'/\\1common/sg" conf-currys/dev/server.conf.php
-echo "perl -0777 -i -pe s/('https?:\\/\\/)'\\s*\\.\\s*getenv\\(\\s*'EM_USERNAME'\\s*\\)\\s*\\.\\s*'/\\1common/sg conf-currys/dev/server.conf.php" > /tmp/gateway.log
-
 if [ ! -h "web_dir/fo-pcw" ]; then
 ln -s fo-currys web_dir/fo-pcw
 fi
@@ -33,7 +30,7 @@ if [ ! -d "includes" ]; then
 	mkdir includes
 fi
 
-#chown #{node['nemo']['user']}:#{node['nemo']['group']} #{node['nemo']['root_directory']}
+#chown #{node['nemo']['system_user']}:#{node['nemo']['system_group']} #{node['nemo']['root_directory']}
 EOF
 
 end

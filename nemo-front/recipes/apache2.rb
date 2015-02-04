@@ -7,13 +7,13 @@
 # All rights reserved - Do Not Redistribute
 #
 
-group node['nemo']['group']
+group node['nemo']['system_group']
 
-user node['nemo']['user'] do
+user node['nemo']['system_user'] do
   supports :manage_home => true 
-  group node['nemo']['group']
+  group node['nemo']['system_group']
   shell '/bin/bash'
-  home "/home/#{node['nemo']['user']}"
+  home "/home/#{node['nemo']['system_user']}"
   action :create
 end
 
@@ -38,31 +38,3 @@ apache_site '000-default' do
   enable false
 end
 
-#Additional modules
-# using apt
-
-#updating packages before installing memcache modules otherwise it fails
-bash "update packages" do
-user "root"
-code <<-EOF
- apt-get update --fix-missing
-EOF
-end
-
-package "php5-memcache" do
-  action :install
- end
-
-package "apache2-suexec" do
-  action :install
- end
-
-include_recipe 'curl'
-package "php5-curl" do
-  action :install
- end
-
-#required for sql relay
-package "libssl0.9.8" do
-	action :install
-end

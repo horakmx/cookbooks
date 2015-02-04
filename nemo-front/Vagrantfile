@@ -93,6 +93,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		"recipe[nemo-front::sqlrelay]",
 		"recipe[nemo-front::varnish]",
 		"recipe[nemo-front::websites]",
+		"recipe[nemo-front::translations]"
     ]
   end
 

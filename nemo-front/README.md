@@ -21,8 +21,9 @@ Ubuntu 12.04 LTS
     <th>Description</th>
     <th>Default</th>
   </tr>
-  <tr> <td><tt>['nemo']['user']</tt></td> <td>String</td> <td>User under which the application will run</td> <td><tt></tt></td> </tr>
-  <tr> <td><tt>['nemo']['group']</tt></td> <td>String</td> <td>User Group under which the application will run</td> <td><tt></tt></td> </tr>
+  <tr> <td><tt>['nemo']['user']</tt></td> <td>String</td> <td>User for local vhost (eg pulvaj01.fo-currys.local)</td> <td><tt></tt></td> </tr>
+  <tr> <td><tt>['nemo']['system_user']</tt></td> <td>String</td> <td>Systmem User under which the application will run</td> <td><tt>vagrant</tt></td> </tr>
+  <tr> <td><tt>['nemo']['system_group']</tt></td> <td>String</td> <td>System Group under which the application will run</td> <td><tt>vagrant</tt></td> </tr>
   <tr> <td><tt>['nemo']['root_directory']</tt></td> <td>String</td> <td>Apache root directory (where the application files will be held)</td> <td><tt>/home/username</tt></td> </tr>
   <tr> <td><tt>['nemo']['apache_host']</tt></td> <td>String</td> <td>Apache Listening Ip address</td> <td><tt>127.0.0.1</tt></td> </tr>
   <tr> <td><tt>['nemo']['apache_port']</tt></td> <td>String</td> <td>Apache Listening Port</td> <td><tt>8080</tt></td> </tr>
@@ -42,12 +43,17 @@ Include `nemo-front` in your node's `run_list`:
 ```json
 {
   "run_list": [
-	 "recipe[nemo-front::webserver]",
+	 "recipe[nemo-front::apache2]",
      "recipe[nemo-front::php-fpm]",
+     "recipe[nemo-front::composer]",
+     "recipe[nemo-front::php]",
 	 "recipe[nemo-front::memcached]",
 	 "recipe[nemo-front::sqlrelay]",
-	 "recipe[nemo-front::varnish]"
-	 "recipe[nemo-front::websites]"
+	 "recipe[nemo-front::varnish]",
+	 "recipe[nemo-front::websites]",
+	 "recipe[nemo-front::syslog-ng]",
+	 "recipe[nemo-front::translations]"
+
   ]
 }
 ```

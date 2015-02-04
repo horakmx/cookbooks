@@ -9,10 +9,16 @@ ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 
 172.20.1.39 common.wsint-brain.wsint.dev.hml.dixonsretail.net
+172.20.1.39 common-r4.wsint-brain.wsint.dev.hml.dixonsretail.net
 172.20.1.39 common.gateway.wsint.dev.hml.dixonsretail.net
-172.20.1.39 common-r2.gateway.wsint.dev.hml.dixonsretail.net
+172.20.1.39 common-r4.gateway.wsint.dev.hml.dixonsretail.net
 172.20.1.39 common.ws-scud.wsint.dev.hml.dixonsretail.net
+172.20.1.39 common-r4.ws-scud.wsint.dev.hml.dixonsretail.net
 172.20.1.39 common.sourcing.wsint.dev.hml.dixonsretail.net
+172.20.1.39 common-r4.sourcing.wsint.dev.hml.dixonsretail.net
 172.20.1.39 common.fraudbuster.wsint.dev.hml.dixonsretail.net
+172.20.1.39 common-r4.fraudbuster.wsint.dev.hml.dixonsretail.net
 172.20.1.39 common.ws-client.wsint.dev.hml.dixonsretail.net
+172.20.1.39 common-r4.ws-client.wsint.dev.hml.dixonsretail.net
 172.20.1.39 common.ws-webcall.dev.hml.dixonsretail.net
+172.20.1.39 common-r4.ws-webcall.dev.hml.dixonsretail.net

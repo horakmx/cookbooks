@@ -6,6 +6,9 @@ code <<-EOF
   EOF
 end
 
+#switching logging to syslog
+node.default['php-fpm']['error_log'] = 'syslog';
+
 include_recipe "php-fpm"
 
 php_fpm_pool "#{node['nemo']['system_user']}" do

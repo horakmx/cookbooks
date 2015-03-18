@@ -43,6 +43,31 @@ end
 #                                         }
 include_recipe "php"
 
+#installing building tools
+package "build-essential" do
+   action :install
+end
+
+package "libpcre3-dev" do
+   action :install
+end
+
+# install zend opcache  with directives
+#php_pear "zendopcache" do
+#  action :install
+#    directives(	:memory_consumption 	=> 128, 
+#		  		:interned_string_buffer	=> 8,
+#				:max_accelerated_files	=> 4000,
+#				:revalidate_freq		=> 60,
+#				:fast_shutdown			=> 1,
+#				:enable_cli => 1)
+#end
+
+php_pear "apc" do
+  action :install
+    directives(:shm_size => 128, :enable_cli => 1)
+end
+
 package "php5-memcache" do
    action :install
  end

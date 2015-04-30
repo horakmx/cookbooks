@@ -1,0 +1,69 @@
+FastCgiExternalServer /var/www/external-php-wrapper.fcgi -socket /var/run/fpm-<%= node['nemo']['user'] %>.socket -user <%= node['nemo']['user'] %> -group <%= node['nemo']['group'] %> -idle-timeout 241
+
+<VirtualHost *:<%= node['nemo']['apache_port'] %>>
+    ServerName <%= node['nemo']['user'] %>.local
+    ServerAlias <%= node['nemo']['user'] %>.local
+    ServerAlias <%= node['nemo']['user'] %>.*.local
+
+    VirtualDocumentRoot <%= node['nemo']['root_directory'] %>/web_dir/%2/www
+    
+#  LogFormat "%{%F %T}t %h %u (%>s) %B [duration: %D us (%T s)] \"%r\" UA=\"%{User-Agent}i\" CT=\"%{Content-Type}o\" CE=\"%{Content-Encoding}o\" UN=pulvaj01" dsg_common
+#    CustomLog "|exec /usr/bin/logger -p local1.info -t pulvaj01-fo-apache2-ACCESS" dsg_common
+#    ErrorLog  "|exec /usr/bin/logger -p local2.info -t pulvaj01-fo-apache2-ERROR"
+
+    LimitInternalRecursion 10 5
+
+    RewriteEngine on
+    RewriteMap  lc int:tolower
+    RewriteOptions inherit
+
+    SuexecUserGroup <%= node['nemo']['user'] %> <%= node['nemo']['group'] %>
+
+   # Include /etc/apache2/includes/allowedextensions
+
+    ScriptAlias /wrapper /var/www
+    AddHandler php-wrapper .php
+    Action php-wrapper /wrapper/external-php-wrapper.fcgi
+
+    <Directory <%= node['nemo']['root_directory'] %>/web_dir/>
+        Options +FollowSymlinks -Indexes
+        AllowOverride FileInfo Limit
+		Require all granted
+    </Directory>
+
+   #ENV Variables
+
+SetEnv EM_SQLR_VIP      172.20.1.41
+SetEnv EM_FACILITY      local3
+SetEnv EM_FOCORE        <%= node['nemo']['root_directory'] %>/fo-core
+SetEnv EM_DEBUG_LEVEL   0
+SetEnv EM_STAGING       FALSE
+SetEnv EM_ENV           dev
+SetEnv EM_COMPONENT     mutu
+SetEnv EM_USERNAME      <%= node['nemo']['user'] %>
+SetEnv EM_MEMCACHE_FILE <%= node['nemo']['root_directory'] %>/includes/memcache.inc.php
+SetEnv EM_GETTEXT_DIR  <%= node['nemo']['root_directory'] %>/includes/gettext/
+SetEnv TNS_ADMIN       /etc/oracle
+SetEnv NLS_SORT        BINARY
+SetEnv NLS_DATE_FORMAT "YYYY-MM-DD HH24:MI:SS"
+SetEnv NLS_NUMERIC_CHARACTERS  .
+SetEnv NLS_LANG        FRENCH_FRANCE.AL32UTF8
+SetEnv ORACLE_SID      oracle
+SetEnv ORACLE_HOME     /usr/lib/oracle/11.2/client64/
+SetEnv USERNAME        <%= node['nemo']['user'] %>
+SetEnv HOME    <%= node['nemo']['root_directory'] %>
+SetEnv USER    <%= node['nemo']['user'] %>
+SetEnv FCGI_ROLE       RESPONDER
+SetEnv REDIRECT_trustextension codeigniter
+SetEnv REDIRECT_SCRIPT_URL     /
+SetEnv REDIRECT_HANDLER        php-wrapper
+SetEnv REDIRECT_STATUS 200
+SetEnv trustextension  php
+SetEnv SCRIPT_URL      /
+SetEnv PATH    "/usr/local/bin:/usr/bin:/bin"
+SetEnv SERVER_SIGNATURE        "no value"
+SetEnv SERVER_SOFTWARE Apache
+SetEnv SERVER_NAME     localhost
+SetEnv SERVER_ADDR     <%= node['nemo']['apache_host'] %>
+
+</VirtualHost>

@@ -1,0 +1,34 @@
+FastCgiExternalServer /var/www/external-php-wrapper.fcgi -socket /var/run/fpm-<%= node['webpagetest']['system_user'] %>.socket -user <%= node['webpagetest']['system_user'] %> -group <%= node['webpagetest']['system_group'] %> -idle-timeout 241
+
+<VirtualHost *:<%= node['webpagetest']['apache_port'] %>>
+    ServerName <%= node['webpagetest']['domain'] %>
+
+    VirtualDocumentRoot <%= node['webpagetest']['root_directory'] %>
+    
+   	LimitInternalRecursion 10 5
+
+    RewriteEngine on
+    RewriteMap  lc int:tolower
+    RewriteOptions inherit
+	AllowEncodedSlashes on
+
+    SuexecUserGroup <%= node['webpagetest']['system_user'] %> <%= node['webpagetest']['system_group'] %>
+
+   # Include /etc/apache2/includes/allowedextensions
+
+	CustomLog /var/log/apache2/access.log combined
+
+    ScriptAlias /wrapper /var/www
+    AddHandler php-wrapper .php
+    Action php-wrapper /wrapper/external-php-wrapper.fcgi
+
+    <Directory <%= node['webpagetest']['root_directory'] %>>
+        Options +FollowSymlinks -Indexes
+        AllowOverride FileInfo Limit
+		Require all granted
+    </Directory>
+
+   #ENV Variables
+
+
+</VirtualHost>

@@ -1,0 +1,38 @@
+require 'roundsman/capistrano'
+
+set :application, 'webpagetest'
+server 'webpagetest.ddns.net', :app
+set :user, 'jnoun'
+
+set :cookbooks_directory, 'tmp/cookbooks'
+set :ruby_version, '2.0.0p646'
+set :chef_version, '12.3.0'
+
+namespace :provision do
+  desc 'Install cookbooks and provision server'
+   task :default do
+    install
+    apply
+  end
+
+   desc 'Install cookbooks with berkshelf'
+	  task :install do
+      run_local "rm -rf #{cookbooks_directory}"
+      run_local "bundle exec berks vendor #{cookbooks_directory}"
+     end
+
+  desc 'Provision server'
+    task :apply do
+roundsman.run_list  "recipe[main::yasm]", "recipe[main::apache2]", "recipe[main::php]", "recipe[main::php-fpm]", "recipe[main::ffmpeg]", "recipe[main::imagemagick]", "recipe[main::imagelibs]"
+
+    end
+  end
+
+  def run_local(command)
+   system(command)
+   if($?.exitstatus != 0) then
+    puts 'exit code: ' + $?.exitstatus.to_s
+    exit
+  end
+end
+							 

@@ -1,0 +1,7 @@
+source "https://supermarket.getchef.com"
+
+# Application cookbook
+cookbook 'main', :path => 'deploy/cookbooks/main'
+
+# Alternative sources
+cookbook 'rvm', :git => 'https://github.com/fnichol/chef-rvm'

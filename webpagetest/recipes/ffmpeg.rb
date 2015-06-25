@@ -6,5 +6,4 @@
 # apt-get update --fix-missing
 # EOF
 #end
-include_recipe "x264"
 include_recipe "ffmpeg"

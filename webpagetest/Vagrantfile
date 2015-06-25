@@ -89,12 +89,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     }
 
     chef.run_list = [
-#		"recipe[webpagetest::yasm]",
-#	"recipe[webpagetest::apache2]",
-#	"recipe[webpagetest::php]",
-#	"recipe[webpagetest::php-fpm]",
-#	"recipe[webpagetest::ffmpeg]",
-#	"recipe[webpagetest::imagemagick]",
+	"recipe[webpagetest::yasm]",
+	"recipe[webpagetest::apache2]",
+	"recipe[webpagetest::php]",
+	"recipe[webpagetest::php-fpm]",
+	"recipe[webpagetest::ffmpeg]",
+	"recipe[webpagetest::imagemagick]",
 	"recipe[webpagetest::imagelibs]"
     ]
   end

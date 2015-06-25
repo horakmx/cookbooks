@@ -7,5 +7,4 @@
 # EOF
 #end
 
-node.default['yasm']['install_method'] = ':source';
 include_recipe "yasm"

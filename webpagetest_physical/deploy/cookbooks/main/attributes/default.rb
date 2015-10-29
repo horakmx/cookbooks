@@ -17,9 +17,9 @@ override['ffmpeg']['compile_flags'] = [
   '--enable-libmp3lame',
   '--enable-libtheora',
   '--enable-libvorbis',
-  '--enable-libvpx',
+#  '--enable-libvpx',
   '--enable-libxvid',
-  '--enable-libfaad'
+#  '--enable-libfaad'
 ]
 override['ffmpeg']['git_revision'] = '620197d1ffea20e9168372c354438f1c1e926ecd' #version 2.7.1
 override['yasm']['install_method'] = ':source'

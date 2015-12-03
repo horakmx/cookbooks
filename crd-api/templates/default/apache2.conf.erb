@@ -1,0 +1,37 @@
+FastCgiExternalServer /var/www/external-php-wrapper.fcgi -socket /var/run/fpm-<%= node['crd-api']['system_user'] %>.socket -user <%= node['crd-api']['system_user'] %> -group <%= node['crd-api']['system_group'] %> -idle-timeout 241
+
+<VirtualHost *:<%= node['crd-api']['apache_port'] %>>
+    ServerName <%= node['crd-api']['app_name'] %>.local
+    ServerAlias <%= node['crd-api']['app_name'] %>.local
+    ServerAlias <%= node['crd-api']['app_name'] %>.*.local
+
+    VirtualDocumentRoot <%= node['crd-api']['root_directory'] %>
+    
+   	LimitInternalRecursion 10 5
+
+    RewriteEngine on
+    RewriteMap  lc int:tolower
+    RewriteOptions inherit
+	AllowEncodedSlashes on
+
+    SuexecUserGroup <%= node['crd-api']['system_user'] %> <%= node['crd-api']['system_group'] %>
+
+   # Include /etc/apache2/includes/allowedextensions
+
+	CustomLog /var/log/apache2/access.log combined
+
+    ScriptAlias /wrapper /var/www
+    AddHandler php-wrapper .php
+    Action php-wrapper /wrapper/external-php-wrapper.fcgi
+
+    <Directory <%= node['crd-api']['root_directory'] %>/www/>
+        Options +FollowSymlinks -Indexes
+        AllowOverride FileInfo Limit
+		Order allow,deny
+		Allow from all
+    </Directory>
+
+   #ENV Variables
+
+
+</VirtualHost>

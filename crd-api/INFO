@@ -1,0 +1,10 @@
+{
+      "name": "Kick Ass Torrents Unlocked",
+	  "displayname": "Kick Ass Torrents Unlocked",
+	  "description": "Kick Ass torrents",
+	  "version": "0.2",
+	  "site": "http://kat.cr.unblocked.it",
+	  "module": "search.php",
+	  "type": "search",
+	  "class": "SynoDLMSearchKAT"
+}

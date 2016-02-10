@@ -6,7 +6,6 @@
 #  EOF
 #end
 
-#switching logging to syslog
 include_recipe "php-fpm"
 
 php_fpm_pool "#{node['crd-api']['system_user']}" do
@@ -22,7 +21,7 @@ php_fpm_pool "#{node['crd-api']['system_user']}" do
 				'php_admin_value[memory_limit]' 					=> '256M',
 				'php_admin_value[max_execution_time]' 				=> "60",
 				'php_admin_value[session.gc_maxlifetime]' 			=> "1440",
-				'php_admin_value[open_basedir]' 					=> "#{node['crd-api']['root_directory']}:/usr/share/php:/usr/share/locale:/mnt/share:/home/common:/tmp",
+				'php_admin_value[open_basedir]' 					=> "#{node['crd-api']['base_directory']}:/usr/share/php:/usr/share/locale:/mnt/share:/home/common:/tmp",
 				'php_admin_value[upload_tmp_dir]' 					=> "#{node['crd-api']['root_directory']}/tmp",
 				'php_admin_value[display_errors]' 					=> "1",
 				'php_admin_value[upload_max_filesize]' 				=> "10M",

@@ -1,0 +1,11 @@
+{
+    "name": "dixons-carphone/crd-api",
+    "license": "proprietary",
+    "type": "project",
+    "require": {
+        "php": ">=5.3.10",
+        "guzzle/guzzle": "^3.9.3"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

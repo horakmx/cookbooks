@@ -1,7 +1,8 @@
 default['crd-api']['app_name'] = 'crd-api'
 default['crd-api']['system_user'] = 'vagrant'
 default['crd-api']['system_group'] = 'vagrant'
-default['crd-api']['root_directory'] = "/vagrant/www/"
+default['crd-api']['base_directory'] = "/vagrant/app/"
+default['crd-api']['root_directory'] = "/vagrant/app/www/"
 default['crd-api']['apache_host'] = '127.0.0.1'
 default['crd-api']['apache_port'] = '80'
 

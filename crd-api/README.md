@@ -42,7 +42,7 @@ Include `crd-api` in your node's `run_list`:
 	"recipe[crd-api::php]",
 	"recipe[crd-api::php-fpm]",
 	"recipe[crd-api::memcached]"
-#	"recipe[crd-api::phalcon]" 
+	"recipe[crd-api::phalcon]" 
   ]
 }
 ```

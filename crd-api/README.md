@@ -23,23 +23,26 @@ All platforms supporting vagrant
   <tr> <td><tt>['crd-api']['app_name']</tt></td> <td>String</td> <td>Application name, will be used for local domain name</td> <td><tt></tt></td> </tr>
   <tr> <td><tt>['crd-api']['system_user']</tt></td> <td>String</td> <td>System User which will run the application</td> <td><tt></tt></td> </tr>
   <tr> <td><tt>['crd-api']['system_group']</tt></td> <td>String</td> <td>Above user group</td> <td><tt></tt></td> </tr>
-  <tr> <td><tt>['crd-api']['root_directory']</tt></td> <td>String</td> <td>Apache root directory (where the application files will be held)</td> <td><tt>/home/username</tt></td> </tr>
+  <tr> <td><tt>['crd-api']['base_directory']</tt></td> <td>String</td> <td>Apache base directory (files that should be accessible within the app)</td> <td><tt>/vagrant/app/</tt></td> </tr>
+  <tr> <td><tt>['crd-api']['root_directory']</tt></td> <td>String</td> <td>Apache web root directory (files that should be accessible through web)</td> <td><tt>/vagrant/app/www</tt></td> </tr>
   <tr> <td><tt>['crd-api']['apache_host']</tt></td> <td>String</td> <td>Apache Listening Ip address</td> <td><tt>127.0.0.1</tt></td> </tr>
   <tr> <td><tt>['crd-api']['apache_port']</tt></td> <td>String</td> <td>Apache Listening Port</td> <td><tt>8080</tt></td> </tr>
 </table>
 
 ## Usage
 
-### webpagetes::default
+### crd-api::default
 
 Include `crd-api` in your node's `run_list`:
 
 ```json
 {
   "run_list": [
-	 "recipe[crd-api::webserver]",
-     "recipe[crd-api::php-fpm]",
-	 "recipe[crd-api::memcached]"
+	"recipe[crd-api::apache2]",
+	"recipe[crd-api::php]",
+	"recipe[crd-api::php-fpm]",
+	"recipe[crd-api::memcached]"
+#	"recipe[crd-api::phalcon]" 
   ]
 }
 ```

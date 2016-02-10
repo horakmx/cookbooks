@@ -1,10 +1,11 @@
-# Webpagetest virtual instance
+# CRD demo API
 
 1. install chefdk 		: http://getchef.com/downloads/chef-dk
 2. install berkshelf	: vagrant plugin install vagrant-berkshelf
 3. install omnibus      : vagrant plugin install vagrant-omnibus
 4. edit attribute file  : attributes/default.rb 
 5. Run vagrant up
+6; Run composer install
 
 ## Supported Platforms
 
@@ -19,29 +20,26 @@ All platforms supporting vagrant
     <th>Description</th>
     <th>Default</th>
   </tr>
-  <tr> <td><tt>['webpagetest']['app_name']</tt></td> <td>String</td> <td>Application name, will be used for local domain name</td> <td><tt></tt></td> </tr>
-  <tr> <td><tt>['webpagetest']['system_user']</tt></td> <td>String</td> <td>System User which will run the application</td> <td><tt></tt></td> </tr>
-  <tr> <td><tt>['webpagetest']['system_group']</tt></td> <td>String</td> <td>Above user group</td> <td><tt></tt></td> </tr>
-  <tr> <td><tt>['webpagetest']['root_directory']</tt></td> <td>String</td> <td>Apache root directory (where the application files will be held)</td> <td><tt>/home/username</tt></td> </tr>
-  <tr> <td><tt>['webpagetest']['apache_host']</tt></td> <td>String</td> <td>Apache Listening Ip address</td> <td><tt>127.0.0.1</tt></td> </tr>
-  <tr> <td><tt>['webpagetest']['apache_port']</tt></td> <td>String</td> <td>Apache Listening Port</td> <td><tt>8080</tt></td> </tr>
+  <tr> <td><tt>['crd-api']['app_name']</tt></td> <td>String</td> <td>Application name, will be used for local domain name</td> <td><tt></tt></td> </tr>
+  <tr> <td><tt>['crd-api']['system_user']</tt></td> <td>String</td> <td>System User which will run the application</td> <td><tt></tt></td> </tr>
+  <tr> <td><tt>['crd-api']['system_group']</tt></td> <td>String</td> <td>Above user group</td> <td><tt></tt></td> </tr>
+  <tr> <td><tt>['crd-api']['root_directory']</tt></td> <td>String</td> <td>Apache root directory (where the application files will be held)</td> <td><tt>/home/username</tt></td> </tr>
+  <tr> <td><tt>['crd-api']['apache_host']</tt></td> <td>String</td> <td>Apache Listening Ip address</td> <td><tt>127.0.0.1</tt></td> </tr>
+  <tr> <td><tt>['crd-api']['apache_port']</tt></td> <td>String</td> <td>Apache Listening Port</td> <td><tt>8080</tt></td> </tr>
 </table>
 
 ## Usage
 
 ### webpagetes::default
 
-Include `webpagetest` in your node's `run_list`:
+Include `crd-api` in your node's `run_list`:
 
 ```json
 {
   "run_list": [
-	 "recipe[webpagetest::webserver]",
-     "recipe[webpagetest::php-fpm]",
-	 "recipe[webpagetest::memcached]",
-	 "recipe[webpagetest::sqlrelay]",
-	 "recipe[webpagetest::varnish]"
-	 "recipe[webpagetest::websites]"
+	 "recipe[crd-api::webserver]",
+     "recipe[crd-api::php-fpm]",
+	 "recipe[crd-api::memcached]"
   ]
 }
 ```

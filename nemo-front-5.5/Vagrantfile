@@ -24,7 +24,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   # If this value is a shorthand to a box in Vagrant Cloud then 
   # config.vm.box_url doesn't need to be specified.
-  config.vm.box = "chef/ubuntu-14.10"
+  config.vm.box = "ubuntu/trusty64"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # is not a Vagrant Cloud box and if it doesn't already exist on the 
@@ -41,8 +41,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 80, host: 8081
-  config.vm.network "forwarded_port", guest: 8080, host: 8090
+  config.vm.network "forwarded_port", guest: 80, host: 8082
+  config.vm.network "forwarded_port", guest: 8080, host: 8092
   
 
   # Share an additional folder to the guest VM. The first argument is
@@ -86,16 +86,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     }
 
     chef.run_list = [
-#		"recipe[nemo-front::apache2]",
-#		"recipe[nemo-front::php]",
-#		"recipe[nemo-front::composer]",
+		"recipe[nemo-front::vim]",
+		"recipe[nemo-front::apache2]",
+		"recipe[nemo-front::php]",
+		"recipe[nemo-front::composer]",
 		"recipe[nemo-front::syslog]",
 	    "recipe[nemo-front::php-fpm]",
-#		"recipe[nemo-front::memcached]",
+		"recipe[nemo-front::memcached]",
 #		"recipe[nemo-front::sqlrelay]",
-#		"recipe[nemo-front::varnish]",
-#		"recipe[nemo-front::websites]",
-#		"recipe[nemo-front::translations]"
+		"recipe[nemo-front::varnish]",
+		"recipe[nemo-front::websites]",
+		"recipe[nemo-front::translations]"
     ]
   end
 

@@ -1,3 +1,4 @@
+package('syslog-ng-core') { action :install }
 include_recipe "syslog-ng"
 
 cookbook_file "syslog-ng.conf" do

@@ -13,23 +13,7 @@ set_include_path(
 );
 
 // Required for phalcon/incubator
-include __DIR__ . "/../../vendor/autoload.php";
-
-// Use the application autoloader to autoload the classes
-// Autoload the dependencies found in composer
-$loader = new \Phalcon\Loader();
-
-$loader->registerDirs(
-    array(
-        ROOT_PATH
-    )
-);
-
-$loader->registerNamespaces(array(
-'CrdApi\Models' => '../models'
-));
-
-$loader->register();
+include __DIR__ . "/../vendor/autoload.php";
 
 $di = new FactoryDefault();
 Di::reset();

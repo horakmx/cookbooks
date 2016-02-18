@@ -6,6 +6,12 @@
         "php": ">=5.3.10",
         "guzzle/guzzle": "^3.9.3"
     },
+    "autoload": {
+	    "psr-4": {
+		    "CrdApi\\":          "src/"
+		    "CrdApi\\Tests\\":   "src/tests/"
+	    }
+    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }

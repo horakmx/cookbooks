@@ -15,11 +15,11 @@ $app->notFound(function () use ($app) {
 });
 
 // Autoload models
-$loader = new \Phalcon\Loader();
+//$loader = new \Phalcon\Loader();
 
-$loader->registerNamespaces(array(
-'CrdApi\Models' => '../src/models'
-))->register();
+//$loader->registerNamespaces(array(
+//'CrdApi\Models' => '../src/models'
+//))->register();
 
 try 
 {

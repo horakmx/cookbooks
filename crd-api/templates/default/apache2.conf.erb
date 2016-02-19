@@ -6,7 +6,7 @@ FastCgiExternalServer /var/www/external-php-wrapper.fcgi -socket /var/run/fpm-<%
     ServerAlias <%= node['crd-api']['app_name'] %>.*.local
 
     VirtualDocumentRoot <%= node['crd-api']['root_directory'] %>
-    
+
    	LimitInternalRecursion 10 5
 
     RewriteEngine on
@@ -24,11 +24,14 @@ FastCgiExternalServer /var/www/external-php-wrapper.fcgi -socket /var/run/fpm-<%
     AddHandler php-wrapper .php
     Action php-wrapper /wrapper/external-php-wrapper.fcgi
 
-    <Directory <%= node['crd-api']['root_directory'] %>/www/>
-        Options +FollowSymlinks -Indexes
-        AllowOverride FileInfo Limit
-		Order allow,deny
-		Allow from all
+    <Directory /var/www >
+    Require all granted
+    </Directory>
+
+    <Directory <%= node['crd-api']['root_directory'] %>>
+    Options +FollowSymlinks -Indexes
+    AllowOverride FileInfo Limit
+    Require all granted
     </Directory>
 
    #ENV Variables

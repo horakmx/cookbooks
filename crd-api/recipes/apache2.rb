@@ -40,3 +40,8 @@ apache_site '000-default' do
   enable false
 end
 
+package "apache2-suexec" do
+   action :install
+end
+
+

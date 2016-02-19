@@ -1,32 +1,32 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-required_plugins = %w( vagrant-berkshelf vagrant-omnibus )
+  required_plugins = %w( vagrant-berkshelf vagrant-omnibus )
    required_plugins.each do |plugin|
      system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
-end
+  end
 
-# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
-VAGRANTFILE_API_VERSION = "2"
+  # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+  VAGRANTFILE_API_VERSION = "2"
 
-Vagrant.require_version ">= 1.5.0"
+  Vagrant.require_version ">= 1.5.0"
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
 
   config.vm.hostname = "crd-api-berkshelf"
 
-  # Set the version of chef to install using the vagrant-omnibus plugin
+  # Set chef version to install using vagrant-omnibus plugin
   config.omnibus.chef_version = :latest
 
   # Every Vagrant virtual environment requires a box to build off of.
   # If this value is a shorthand to a box in Vagrant Cloud then 
   # config.vm.box_url doesn't need to be specified.
-  config.vm.box = "hashicorp/precise64"
-
-  # The url from where the 'config.vm.box' box will be fetched if it
+  config.vm.box = "ubuntu/trusty64"
+  
+# The url from where the 'config.vm.box' box will be fetched if it
   # is not a Vagrant Cloud box and if it doesn't already exist on the 
   # user's system.
   # config.vm.box_url = "https://vagrantcloud.com/chef/ubuntu-14.04/version/1/provider/virtualbox.box"
@@ -45,6 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 80, host: 8081
   config.vm.network "forwarded_port", guest: 8080, host: 8090
+  config.vm.network "forwarded_port", guest: 8085, host:8085
   
 
   # Share an additional folder to the guest VM. The first argument is
@@ -58,14 +59,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  # config.vm.provider :virtualbox do |vb|
-  #   # Don't boot with headless mode
-  #   vb.gui = true
-  #
-  #   # Use VBoxManage to customize the VM. For example to change memory:
-  #   vb.customize ["modifyvm", :id, "--memory", "1024"]
-  # end
-  #
+ config.vm.provider :virtualbox do |vb|
+  #   # Don't boot with headless mode$
+  #   vb.gui = true$
+  #$
+  # Use VBoxManage to customize the VM. For example to change memory:$
+  vb.customize ["modifyvm", :id, "--memory", "4096"]
+  vb.customize ["modifyvm", :id, "--cpus", "2"]
+ end
   # View the documentation for the provider you're using for more
   # information on available options.
 
@@ -89,11 +90,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     }
 
     chef.run_list = [
+	"recipe[crd-api::vim]",
 	"recipe[crd-api::apache2]",
 	"recipe[crd-api::php]",
 	"recipe[crd-api::php-fpm]",
-	"recipe[crd-api::memcached]"
-#	"recipe[crd-api::phalcon]",
+	"recipe[crd-api::xdebug]",
+	"recipe[crd-api::composer]",
+	"recipe[crd-api::phpunit]",
+	"recipe[crd-api::memcached]",
+	"recipe[crd-api::phalcon]",
+	"recipe[crd-api::bamboo]"
     ]
   end
 

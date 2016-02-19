@@ -25,17 +25,9 @@ php_fpm_pool "#{node['crd-api']['system_user']}" do
 				'php_admin_value[upload_tmp_dir]' 					=> "#{node['crd-api']['root_directory']}/tmp",
 				'php_admin_value[display_errors]' 					=> "1",
 				'php_admin_value[upload_max_filesize]' 				=> "10M",
-				'php_admin_value[post_max_size]' 					=> "10M",
-				'php_admin_value[xdebug.profiler_output_dir]' 		=> "#{node['crd-api']['root_directory']}/xdebug",
-				'php_admin_value[xdebug.remote_port]' 				=> "9000",
-				'php_admin_value[xdebug.remote_connect_back]' 		=> "1",
-				'php_admin_value[xdebug.remote_enable]' 			=> "1",
-				'php_admin_value[xdebug.profiler_enable_trigger]' 	=> "1",
-				'php_admin_value[xdebug.collect_assignments]' 		=> "1",
-				'php_admin_value[xdebug.collect_includes]' 			=> "1",
-				'php_admin_value[xdebug.collect_params]' 			=> "4",
-				'php_admin_value[xdebug.collect_return]' 			=> "1",
-				'php_admin_value[xdebug.show_mem_delta]' 			=> "1",
-				'php_admin_value[xdebug.trace_output_name]' 		=> "trace.%R"
-#;php_admin_value[xdebug.trace_enable_trigger] = 1
+				'php_admin_value[post_max_size]' 					=> "10M"
 end 
+
+service "php5-fpm" do
+  notifies :restart, "service[php5-fpm]", :delayed
+end

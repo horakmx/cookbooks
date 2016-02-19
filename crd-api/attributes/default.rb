@@ -26,3 +26,32 @@ when "debian"
 end
 
 default['php-phalcon']['devtools'] = true
+
+default['xdebug']['version'] = '2.2.3'
+default['xdebug']['config_file'] = '/etc/php5/fpm/conf.d/xdebug.ini'
+default['xdebug']['web_server']['service_name'] = 'apache2'
+default['xdebug']['directives'] = 
+{
+    'profiler_output_dir' 		=> "/vagrant/app/xdebug",
+    'remote_port' 				=> "9000",
+    'remote_connect_back' 		=> "1",
+    'remote_enable' 			=> "1",
+    'profiler_enable_trigger' 	=> "1",
+    'collect_assignments' 		=> "1",
+    'collect_includes' 			=> "1",
+    'collect_params' 			=> "4",
+    'collect_return' 			=> "1",
+    'show_mem_delta' 			=> "1",
+    'trace_output_name' 		=> "trace.%R",
+    'trace_enable_trigger'      => "1"
+}
+
+#default['bamboo']['home_dir'] = 
+#default['bamboo']['data_dir'] = 
+#default['bamboo']['user'] = 
+#default['bamboo']['group'] = 
+#default['bamboo']['disable_agent_auto_capability_detection'] = false
+#default['bamboo']['additional_path'] = ''
+default['bamboo']['database']['type'] = 'mysql'
+default['bamboo']['backup']['enabled'] = false
+default['bamboo']['graylog']['enabled'] = false

@@ -3,7 +3,7 @@ namespace CrdApi\Models;
 
 abstract class NemoWsModel
 {
-    private   $client;
+    private $client;
     protected $requestUrl;
     protected $request;
 
@@ -22,13 +22,13 @@ abstract class NemoWsModel
     {
         $this->getClient('10.0');
         $this->buildRequest($params);
-        $method   = static::requestMethod;
+        $method   = static::REQUESTMETHOD;
         $request  = $this->client->$method($this->requestUrl, array(), array($this->request));
         $response = $request->send();
         return json_encode($this->parseResponse(unserialize($response->getBody(true))));
     }
 
-    public function externalRequest($method = 'get', $requestUrl, $request = '')
+    public function externalRequest($method, $requestUrl, $request = '')
     {
         $this->getClient('2.0');
         $request  = $this->client->$method($requestUrl);
@@ -38,15 +38,11 @@ abstract class NemoWsModel
 
     public function output($response, $return = false)
     {
-        if( $return === false)
-        {
+        if ($return === false) {
             echo $response;
             return true;
-        }
-        else
-        {
+        } else {
             return $response;
         }
     }
 }
-?>

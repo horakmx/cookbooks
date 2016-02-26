@@ -1,0 +1,43 @@
+<project name="CRD-API" default="build">
+    <target name="clean">
+        <delete dir="${basedir}/build" />
+    </target>
+
+    <target name="prepare">
+        <mkdir dir="${basedir}/build/logs" />
+        <mkdir dir="${basedir}/build/coverage" />
+        <mkdir dir="${basedir}/build/dependencies" />
+        <exec dir="${basedir}" executable="composer" failonerror="true">
+            <arg line="install" />
+        </exec>
+    </target>
+
+    <target name="phpunit">
+        <exec dir="${basedir}" executable="phpunit" failonerror="true">
+            <arg line="--bootstrap tests/TestHelper.php
+                       --log-junit ${basedir}/build/logs/phpunit.xml
+                       --coverage-html ${basedir}/build/coverage" />
+        </exec>
+    </target>
+
+    <target name="phpcs">
+        <exec dir="${basedir}" executable="phpcs" failonerror="true">
+            <arg line="--standard=PSR2 --report=checkstyle --report-file=${basedir}/build/logs/checkstyle.xml src/ www/" />
+        </exec>
+    </target>
+
+    <target name="phpmd">
+        <exec dir="${basedir}" executable="phpmd" failonerror="false">
+            <arg line="--exclude vendor --reportfile ${basedir}/build/logs/pmd.xml ./ xml codesize,unusedcode,naming,cleancode" />
+        </exec>
+    </target>
+
+    <target name="parallel">
+        <parallel>
+            <antcall target="phpcs" />
+            <antcall target="phpmd" />
+        </parallel>
+    </target>
+
+    <target name="build" depends="clean,prepare,phpunit,parallel" />
+</project>

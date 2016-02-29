@@ -1,11 +1,3 @@
-#updating packages before installing  otherwise it fails
-#bash "update packages" do
-#user "root"
-#code <<-EOF
-# apt-get update --fix-missing
-#  EOF
-#end
-
 include_recipe "php-fpm"
 
 php_fpm_pool "#{node['crd-api']['system_user']}" do

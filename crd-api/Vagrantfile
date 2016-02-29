@@ -96,7 +96,7 @@
 	"recipe[crd-api::php-fpm]",
 	"recipe[crd-api::xdebug]",
 	"recipe[crd-api::composer]",
-	"recipe[crd-api::phpunit]",
+	"recipe[crd-api::php-ci]",
 	"recipe[crd-api::memcached]",
 	"recipe[crd-api::phalcon]",
 	"recipe[crd-api::bamboo]"

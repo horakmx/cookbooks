@@ -26,11 +26,9 @@ class Basket
         $this->cache->save($this->basketId, $this->products);
     }
 
-    public function load($basketId = 0)
+    public function load($basketId = null)
     {
-        if ($basketId !== 0) {
-            $this->basketId = $basketId;
-        }
+        $this->setBasketId($basketId);
 
         $this->getCache();
 
@@ -39,15 +37,20 @@ class Basket
         }
     }
 
-    public function delete($basketId)
+    public function delete($basketId = null)
     {
-        if ($basketId !== 0) {
-            $this->basketId = $basketId;
+        if (true === is_null($this->basketId)) {
+            if ($basketId !== 0) {
+                $this->basketId = $basketId;
+            }
         }
 
         $this->getCache();
-        $this->cache->delete($this->basketId);
-        $this->getJSON($this->basketId);
+        if (true === $this->cache->exists($this->basketId)) {
+            $this->cache->delete($this->basketId);
+        }
+        $this->products = null;
+        $this->getJSON();
     }
 
     public function getProducts()
@@ -55,95 +58,118 @@ class Basket
         return $this->products;
     }
 
-    private function setBasketId($basketId = null)
+    public function getUniqueProductsCount()
     {
-        if (true === empty($basketId)) {
-            $basketId = uniqid(true);
-        }
-
-        $this->basketId = $basketId;
+        return count($this->products);
     }
 
-    public function addProduct($product, $quantity, $basketId = null)
+    public function getTotalProductsCount()
     {
-        $this->setBasketId($basketId);
-
-        if (false === empty($basketId)) {
-            $this->load();
+        $totalQuantity = 0;
+        foreach ($this->products as $product) {
+            $totalQuantity += $product['quantity'];
         }
 
-        $oProduct       = new Products();
-        $arrayProduct   = $oProduct->getById($product, true);
+        return $totalQuantity;
+    }
 
-        if (false === isset($this->products[$product])) {
-            $this->products[$product]     = array(
-                                                    'productId'        => $product,
-                                                    'title'            => $arrayProduct['title'],
-                                                    'image'            => $arrayProduct['image'],
-                                                    'quantity'         => (int) $quantity,
-                                                    'unitPriceIAT'     => $arrayProduct['priceIAT'],
-                                                    'unitPriceEAT'     => $arrayProduct['priceEAT'],
-                                                    'totalVAT'         => $quantity * $arrayProduct['VAT'],
-                                                    'totalPriceIAT'    => $quantity * $arrayProduct['priceIAT'],
-                                                    'totalPriceEAT'    => $quantity * $arrayProduct['priceEAT'] );
+    private function setBasketId($basketId)
+    {
+        if (true === is_null($basketId)) {
+            if (true === is_null($this->basketId)) {
+                $basketId = uniqid(true);
+                $this->basketId = $basketId;
+            }
         } else {
-            $this->products[$product]['quantity']         += $quantity;
-            $this->products[$product]['totalVAT']         = $this->products[$product]['quantity'] *
-                ($this->products[$product]['unitPriceIAT'] - $this->products[$product]['unitPriceEAT']);
-            $this->products[$product]['totalPriceIAT']    = $this->products[$product]['quantity'] *
-                $this->products[$product]['unitPriceIAT'];
-            $this->products[$product]['totalPriceEAT']    = $this->products[$product]['quantity'] *
-                $this->products[$product]['unitPriceEAT'];
+            $this->basketId = $basketId;
         }
-
-        $this->save();
-        $this->getJSON($this->basketId);
     }
 
-    public function removeProduct($product, $quantity, $basketId)
+    public function hasProducts(array $productIds)
+    {
+        return array_intersect($productIds, array_keys($this->products)) === $productIds;
+    }
+
+    public function addProduct(array $product, $quantity, $basketId = null)
     {
         $this->setBasketId($basketId);
         $this->load();
 
-        if ($this->products[$product]['quantity'] - $quantity <= 0) {
-            unset($this->products[$product]);
+        if (false === isset($this->products[$product['productId']])) {
+            $this->products[$product['productId']]     = array(
+                                                    'productId'        => $product['productId'],
+                                                    'title'            => $product['title'],
+                                                    'image'            => $product['image'],
+                                                    'quantity'         => (int) $quantity,
+                                                    'unitPriceIAT'     => $product['priceIAT'],
+                                                    'unitPriceEAT'     => $product['priceEAT'],
+                                                    'totalVAT'         => $quantity * $product['VAT'],
+                                                    'totalPriceIAT'    => $quantity * $product['priceIAT'],
+                                                    'totalPriceEAT'    => $quantity * $product['priceEAT'] );
         } else {
-            $this->products[$product]['quantity'] = $this->products[$product]['quantity'] - $quantity;
-            $this->products[$product]['totalPriceIAT'] =
-                $this->products[$product]['unitPriceIAT'] * $this->products[$product]['quantity'];
-            $this->products[$product]['totalPriceEAT'] =
-                $this->products[$product]['unitPriceEAT'] * $this->products[$product]['quantity'];
+            $this->products[$product['productId']]['quantity']         += $quantity;
+            $this->products[$product['productId']]['totalVAT']         =
+                $this->products[$product['productId']]['quantity'] *
+                ($this->products[$product['productId']]['unitPriceIAT'] -
+                $this->products[$product['productId']]['unitPriceEAT']);
+            $this->products[$product['productId']]['totalPriceIAT']    =
+                $this->products[$product['productId']]['quantity'] *
+                $this->products[$product['productId']]['unitPriceIAT'];
+            $this->products[$product['productId']]['totalPriceEAT']    =
+                $this->products[$product['productId']]['quantity'] *
+                $this->products[$product['productId']]['unitPriceEAT'];
         }
 
         $this->save();
-        $this->getJSON($this->basketId);
+        $this->getJSON();
     }
 
-    public function getJson($basketId)
+    public function removeProduct($productId, $quantity, $basketId = null)
     {
-        if (false === is_null($basketId)) {
-            $this->setBasketId($basketId);
-            $this->load();
+        $this->setBasketId($basketId);
+        $this->load();
+
+        if ($this->products[$productId]['quantity'] - $quantity <= 0) {
+            unset($this->products[$productId]);
+        } else {
+            $this->products[$productId]['quantity'] = $this->products[$productId]['quantity'] - $quantity;
+            $this->products[$productId]['totalPriceIAT'] =
+                $this->products[$productId]['unitPriceIAT'] * $this->products[$productId]['quantity'];
+            $this->products[$productId]['totalPriceEAT'] =
+                $this->products[$productId]['unitPriceEAT'] * $this->products[$productId]['quantity'];
         }
+
+        $this->save();
+        $this->getJSON();
+    }
+
+    public function getJson($return = false)
+    {
         $subtotalEAT = $this->getEATSubTotal();
         $subtotalIAT = $this->getIATSubTotal();
         $VATSubtotal = $this->getIATSubTotal() - $this->getEATSubTotal();
 
-        echo json_encode(array(
+        $returnValue =  json_encode(array(
                     'basketId'    => $this->basketId,
                     'products'    => $this->products,
                     'subtotalEAT' => $subtotalEAT,
                     'VATSubtotal' => $VATSubtotal,
                     'subtotalIAT' => $subtotalIAT));
+
+        if (true === $return) {
+            return $returnValue;
+        } else {
+            echo $returnValue;
+        }
     }
 
-    private function getIATSubTotal()
+    public function getIATSubTotal()
     {
         $IATSubtotal = 0;
 
         if (true === is_array($this->products)) {
             reset($this->products);
-            foreach ($this->products as $productId => $productArray) {
+            foreach ($this->products as $productArray) {
                 $IATSubtotal += $productArray['totalPriceIAT'];
             }
         }
@@ -151,13 +177,13 @@ class Basket
         return $IATSubtotal;
     }
 
-    private function getEATSubTotal()
+    public function getEATSubTotal()
     {
         $EATSubtotal = 0;
 
         if (true === is_array($this->products)) {
             reset($this->products);
-            foreach ($this->products as $productId => $productArray) {
+            foreach ($this->products as $productArray) {
                 $EATSubtotal += $productArray['totalPriceEAT'];
             }
         }

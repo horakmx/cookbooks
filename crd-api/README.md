@@ -38,12 +38,17 @@ Include `crd-api` in your node's `run_list`:
 ```json
 {
   "run_list": [
-	"recipe[crd-api::apache2]",
-	"recipe[crd-api::php]",
-	"recipe[crd-api::php-fpm]",
-	"recipe[crd-api::memcached]"
-	"recipe[crd-api::phalcon]" 
-  ]
+    "recipe[crd-api::vim]",
+    "recipe[crd-api::apache2]",
+    "recipe[crd-api::php]",
+    "recipe[crd-api::php-fpm]",
+    "recipe[crd-api::xdebug]",
+    "recipe[crd-api::composer]",
+    "recipe[crd-api::php-ci]",
+    "recipe[crd-api::memcached]",
+    "recipe[crd-api::phalcon]",
+    "recipe[crd-api::bamboo]"
+    ]
 }
 ```
 

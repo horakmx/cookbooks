@@ -1,0 +1,13 @@
+name             'sandbox'
+maintainer       'Pulvar Jean-Marc'
+maintainer_email 'jm.pulvar@gmail.com'
+license          'All rights reserved'
+description      'Configures a sandbox on a VPS'
+long_description 'Configures a sandbox on a VPS'
+version          '0.1.0'
+
+depends 'vim', '~> 1.1.2'
+depends 'apache2', '~> 3.2.2'
+depends 'php', '~> 2.1.1'
+depends 'php-fpm', '~> 0.7.6'
+depends 'curl', '~> 2.0.3'

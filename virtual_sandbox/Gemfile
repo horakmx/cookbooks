@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+
+group :development do
+  gem 'knife-solo', '~> 0.6.0'
+  gem 'berkshelf', '~> 5.2.0'
+end

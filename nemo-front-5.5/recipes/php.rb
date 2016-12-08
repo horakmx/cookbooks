@@ -1,13 +1,12 @@
 
-#updating packages before installing memcache modules otherwise it fails
-#bash "update packages" do
-#user "root"
-#code <<-EOF
-# apt-get update --fix-missing
-# EOF
-#end
 
 include_recipe "php"
+
+#php_pear "apc" do
+#  action :install
+#    directives(:shm_size => 128, :enable_cli => 1)
+#end
+
 
 package "php5-memcache" do
    action :install

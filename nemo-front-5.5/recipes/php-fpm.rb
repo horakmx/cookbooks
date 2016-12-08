@@ -1,11 +1,14 @@
+#switching logging to syslog
+node.default['php-fpm']['error_log'] = 'syslog';
+
 include_recipe "php-fpm"
 
-php_fpm_pool "#{node['nemo']['user']}" do
-    user "#{node['nemo']['user']}"
-    group "#{node['nemo']['group']}"
-    listen "/var/run/fpm-#{node['nemo']['user']}.socket"
-    listen_owner "#{node['nemo']['user']}"
-	listen_group "#{node['nemo']['group']}"
+php_fpm_pool "#{node['nemo']['system_user']}" do
+    user "#{node['nemo']['system_user']}"
+    group "#{node['nemo']['system_group']}"
+    listen "/var/run/fpm-#{node['nemo']['system_user']}.socket"
+    listen_owner "#{node['nemo']['system_user']}"
+	listen_group "#{node['nemo']['system_group']}"
 	listen_mode  "0666"
 	process_manager "dynamic"
     max_requests 5000

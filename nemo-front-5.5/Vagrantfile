@@ -18,6 +18,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.hostname = "nemo-front-berkshelf"
 
+
   # Set the version of chef to install using the vagrant-omnibus plugin
   config.omnibus.chef_version = :latest
 
@@ -36,32 +37,37 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # any other machines on the same network, but cannot be accessed (through this
   # network interface) by any external networks.
   # config.vm.network :private_network, type: "dhcp"
-  config.vm.network :private_network, ip: "192.168.0.10"
+  config.vm.network :private_network, ip: "192.168.1.10"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 80, host: 8082
-  config.vm.network "forwarded_port", guest: 8080, host: 8092
-  
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 8080, host: 8090
+  config.vm.network "forwarded_port", guest: 8091, host: 8091
+  config.vm.network "forwarded_port", guest: 9000, host: 9001
+  config.vm.network "forwarded_port", guest: 5432, host: 5432
+  config.vm.network "forwarded_port", guest: 22, host:2200 
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
- config.vm.synced_folder ".", "/vagrant", type: "nfs"
+  config.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_udp: false
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
+
   #
-  # config.vm.provider :virtualbox do |vb|
-  #   # Don't boot with headless mode
-  #   vb.gui = true
-  #
-  #   # Use VBoxManage to customize the VM. For example to change memory:
-  #   vb.customize ["modifyvm", :id, "--memory", "1024"]
-  # end
+   config.vm.provider :virtualbox do |vb|
+    #   # Don't boot with headless mode
+    #   vb.gui = true
+    #
+    # Use VBoxManage to customize the VM. For example to change memory:
+     vb.customize ["modifyvm", :id, "--memory", "1024"]
+     vb.customize ["modifyvm", :id, "--cpus", "2"]
+   end
   #
   # View the documentation for the provider you're using for more
   # information on available options.
@@ -86,17 +92,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     }
 
     chef.run_list = [
-		"recipe[nemo-front::vim]",
-		"recipe[nemo-front::apache2]",
-		"recipe[nemo-front::php]",
-		"recipe[nemo-front::composer]",
-		"recipe[nemo-front::syslog]",
-	    "recipe[nemo-front::php-fpm]",
-		"recipe[nemo-front::memcached]",
-#		"recipe[nemo-front::sqlrelay]",
-		"recipe[nemo-front::varnish]",
-		"recipe[nemo-front::websites]",
-		"recipe[nemo-front::translations]"
+        "recipe[nemo-front::apache2]",
+        "recipe[nemo-front::php]",
+        "recipe[nemo-front::composer]",
+        "recipe[nemo-front::syslog]",
+        "recipe[nemo-front::php-fpm]",
+        "recipe[nemo-front::couchbase]",
+        "recipe[nemo-front::sqlrelay]",
+#"recipe[nemo-front::varnish]",
+        "recipe[nemo-front::websites]",
+        "recipe[nemo-front::translations]"
     ]
   end
 

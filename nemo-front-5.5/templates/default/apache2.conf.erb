@@ -1,37 +1,37 @@
-FastCgiExternalServer /var/www/external-php-wrapper.fcgi -socket /var/run/fpm-<%= node['nemo']['user'] %>.socket -user <%= node['nemo']['user'] %> -group <%= node['nemo']['group'] %> -idle-timeout 241
+FastCgiExternalServer /var/www/external-php-wrapper.fcgi -socket /var/run/fpm-<%= node['nemo']['system_user'] %>.socket -user <%= node['nemo']['system_user'] %> -group <%= node['nemo']['system_group'] %> -idle-timeout 241
 
 <VirtualHost *:<%= node['nemo']['apache_port'] %>>
     ServerName <%= node['nemo']['user'] %>.local
     ServerAlias <%= node['nemo']['user'] %>.local
     ServerAlias <%= node['nemo']['user'] %>.*.local
 
-    VirtualDocumentRoot <%= node['nemo']['root_directory'] %>/web_dir/%2/www
+    VirtualDocumentRoot <%= node['nemo']['root_directory'] %>/%2/www
     
-#  LogFormat "%{%F %T}t %h %u (%>s) %B [duration: %D us (%T s)] \"%r\" UA=\"%{User-Agent}i\" CT=\"%{Content-Type}o\" CE=\"%{Content-Encoding}o\" UN=pulvaj01" dsg_common
-#    CustomLog "|exec /usr/bin/logger -p local1.info -t pulvaj01-fo-apache2-ACCESS" dsg_common
-#    ErrorLog  "|exec /usr/bin/logger -p local2.info -t pulvaj01-fo-apache2-ERROR"
+#    LogFormat "%{%F %T}t %h %u (%>s) %B [duration: %D us (%T s)] \"%r\" UA=\"%{User-Agent}i\" CT=\"%{Content-Type}o\" CE=\"%{Content-Encoding}o\" UN=<%= node['nemo']['user'] %>" dsg_common
+#    CustomLog "|exec /usr/bin/logger -p local1.info -t <%= node['nemo']['user'] %>-fo-apache2-ACCESS" dsg_common
+#    ErrorLog  "|exec /usr/bin/logger -p local2.info -t <%= node['nemo']['user'] %>-fo-apache2-ERROR"
 
     LimitInternalRecursion 10 5
 
     RewriteEngine on
     RewriteMap  lc int:tolower
     RewriteOptions inherit
+	AllowEncodedSlashes on
 
-    SuexecUserGroup <%= node['nemo']['user'] %> <%= node['nemo']['group'] %>
+    SuexecUserGroup <%= node['nemo']['system_user'] %> <%= node['nemo']['system_group'] %>
 
    # Include /etc/apache2/includes/allowedextensions
 
     ScriptAlias /wrapper /var/www
     AddHandler php-wrapper .php
     Action php-wrapper /wrapper/external-php-wrapper.fcgi
-
     <Directory /var/www >
         Require all granted
     </Directory>
 
-    <Directory <%= node['nemo']['root_directory'] %>/web_dir/>
+    <Directory <%= node['nemo']['root_directory'] %>>
         Options +FollowSymlinks -Indexes
-        AllowOverride FileInfo Limit
+        AllowOverride AuthConfig FileInfo Limit
 		Require all granted
     </Directory>
 
@@ -45,8 +45,12 @@ SetEnv EM_STAGING       FALSE
 SetEnv EM_ENV           dev
 SetEnv EM_COMPONENT     mutu
 SetEnv EM_USERNAME      <%= node['nemo']['user'] %>
+SetENV EM_DB_CONFIG     <%= node['nemo']['root_directory'] %>/includes/db_conf.php
 SetEnv EM_MEMCACHE_FILE <%= node['nemo']['root_directory'] %>/includes/memcache.inc.php
 SetEnv EM_GETTEXT_DIR  <%= node['nemo']['root_directory'] %>/includes/gettext/
+SetEnv EM_COUCHBASE_FILE_SESSIONS <%= node['nemo']['root_directory'] %>/includes/couchbase-sessions.inc.php
+SetEnv EM_COUCHBASE_FILE_DATA <%= node['nemo']['root_directory'] %>/includes/couchbase-data.inc.php
+SetEnv EM_COUCHBASE_FILE <%= node['nemo']['root_directory'] %>/includes/couchbase.inc.php
 SetEnv TNS_ADMIN       /etc/oracle
 SetEnv NLS_SORT        BINARY
 SetEnv NLS_DATE_FORMAT "YYYY-MM-DD HH24:MI:SS"

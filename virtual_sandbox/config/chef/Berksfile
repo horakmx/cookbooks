@@ -3,5 +3,3 @@ source "https://supermarket.getchef.com"
 cookbook "php-fpm", git: "https://github.com/inviqa/cookbook-php-fpm.git", branch: "feature/ubuntu-16.04-support"
 
 metadata
-
-cookbook "php-fpm", git: "https://github.com/inviqa/cookbook-php-fpm.git", branch: "feature/ubuntu-16.04-support"

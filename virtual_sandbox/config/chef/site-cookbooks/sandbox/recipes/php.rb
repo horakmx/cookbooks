@@ -13,10 +13,9 @@ php_fpm_pool "#{node['sandbox']['system_user']}" do
 action :install
 end
 
-#installing building tools
-#package "build-essential" do
-#   action :install
-#   end
+package "php7.0-mysql" do
+action :install
+end
 
 package "libpcre3-dev" do
      action :install

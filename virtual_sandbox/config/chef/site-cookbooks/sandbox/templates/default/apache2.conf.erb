@@ -1,5 +1,3 @@
-FastCgiExternalServer /var/www/external-php-wrapper.fcgi -socket /var/run/fpm-<%= node['sandbox']['system_user'] %>.socket -user <%= node['sandbox']['system_user'] %> -group <%= node['sandbox']['system_group'] %> -idle-timeout 241
-
 <VirtualHost *:<%= node['sandbox']['apache_port'] %>>
     ServerName <%= node['sandbox']['domain'] %>
 
@@ -11,24 +9,34 @@ FastCgiExternalServer /var/www/external-php-wrapper.fcgi -socket /var/run/fpm-<%
     RewriteOptions inherit
     AllowEncodedSlashes on
 
-    SuexecUserGroup <%= node['sandbox']['system_user'] %> <%= node['sandbox']['system_group'] %>
-
-   # Include /etc/apache2/includes/allowedextensions
-
     CustomLog /var/log/apache2/access.log combined
 
-    ScriptAlias /wrapper /var/www
-    AddHandler php-wrapper .php
-    Action php-wrapper /wrapper/external-php-wrapper.fcgi
-
-    <Directory /var/www >
-        Require all granted
-    </Directory>
+    <Proxy "fcgi://localhost/" enablereuse=on max=10>
+    </Proxy>
+    <FilesMatch "\.php$">
+        # Pick one of the following approaches
+        # Use the standard TCP socket
+        #SetHandler "proxy:fcgi://localhost/
+        # If your version of httpd is 2.4.9 or newer (or has the back-ported feature), you can use the unix domain socket
+        SetHandler "proxy:unix:/var/run/fpm-<%= node['sandbox']['system_user'] %>.socket|fcgi://localhost/"
+    </FilesMatch>
 
     <Directory <%= node['sandbox']['root_directory'] %>>
+        AuthType Basic
+        AuthName "Restricted Files"
+        AuthBasicProvider file
+        AuthUserFile <%= node['sandbox']['root_directory'] %>.htpasswd
+        Require valid-user
         Options +FollowSymlinks -Indexes
-        AllowOverride FileInfo Limit
+        AllowOverride AuthConfig FileInfo Limit
         Require all granted
     </Directory>
 
+    <Location "/">
+        AuthType Basic
+        AuthName "Restricted Files"
+        AuthBasicProvider file
+        AuthUserFile /home/sandbox/www/.htpasswd
+        Require valid-user
+    </Location>
 </VirtualHost>

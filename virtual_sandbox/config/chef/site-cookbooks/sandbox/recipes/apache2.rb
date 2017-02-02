@@ -25,8 +25,8 @@ package 'apache2-suexec-custom' do
 action :install
 end
 
-include_recipe 'apache2::mod_suexec'
-include_recipe 'apache2::mod_fastcgi'
+include_recipe 'apache2::mod_proxy_fcgi'
+include_recipe 'apache2::mod_proxy'
 include_recipe 'apache2::mod_vhost_alias'
 include_recipe 'apache2::mod_authn_core'
 include_recipe 'apache2::mod_authz_core'

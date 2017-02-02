@@ -1,0 +1,10 @@
+{
+  "name": "search",
+  "json_class": "Chef::Role",
+  "description": "Role managing the search engine",
+  "chef_type": "role",
+  "run_list": [
+                  "recipe[sandbox::elasticsearch]",
+                  "recipe[sandbox::kibana]"
+              ]
+}

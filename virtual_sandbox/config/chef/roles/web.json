@@ -1,0 +1,15 @@
+{
+  "name": "web",
+  "json_class": "Chef::Role",
+  "description": "Role managing the web server",
+  "chef_type": "role",
+  "run_list": [
+                  "recipe[sandbox::apache2]",
+                  "recipe[sandbox::ssh]",
+                  "recipe[sandbox::php]",
+                  "recipe[sandbox::mysql]",
+                  "recipe[sandbox::php-fpm]",
+                  "recipe[sandbox::www]",
+                  "recipe[sandbox::wordpress]"
+              ]
+}

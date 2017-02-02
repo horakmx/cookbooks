@@ -1,0 +1,7 @@
+{
+  "port": 223,
+  "user": {
+    "name": "sandbox"
+  },
+  "run_list": [ "role[web]", "role[search]" ]
+}

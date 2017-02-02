@@ -10,7 +10,7 @@
 
 # tell chef about ssh service
 service 'ssh' do
-  provider Chef::Provider::Service::Upstart
+  provider Chef::Provider::Service::Systemd
   supports [:status, :restart]
 end
 
